@@ -1,5 +1,7 @@
 FROM wordpress:6.3.1-apache
 
+RUN chown -R www-data:www-data /var/www/html
+
 RUN apt update && \
     apt install -y wget
 
