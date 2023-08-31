@@ -1,0 +1,46 @@
+services:
+  
+  wordpress:
+    container_name: wordpress
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8888:80
+    environment:
+      TZ: ${TIMEZONE}
+      WORDPRESS_DB_HOST: ${DB_HOST}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./conf.ini:/usr/local/etc/php/conf.d/conf.ini
+      - ./wp-content:/var/www/html/wp-content
+    
+  mysql:
+    container_name: mysql
+    image: mysql:8.0-debian
+    restart: always
+    ports:
+      - 33060:3306
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      TZ: ${TIMEZONE}
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./dumps:/dumps
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
