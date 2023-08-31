@@ -10,5 +10,5 @@ RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp
 RUN wp --info
 
-COPY install-debug-plugins.sh install-debug-plugins.sh
-RUN chmod +x install-debug-plugins.sh
+COPY install-plugins.sh install-plugins.sh
+RUN chmod +x install-plugins.sh
